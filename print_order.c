@@ -43,7 +43,7 @@ void		print_0(t_magic *m)
 		else
 			space = m->w - m->len - hash;
 	}
-	else if (FLAG_C(m->c) || FLAG_B(m->c))
+	else if (FLAG_C(m->c) || FLAG_PER(m->c))
 		space = m->w - m->len;
 	while (space-- > 0)
 		print_char(' ', m);

@@ -18,7 +18,7 @@ int		get_base(char c)
 
 	b = 0;
 	if (FLAG_U(c))
-		b = 10;
+		b = (c == 'b') ? 2 : 10;
 	else if (FLAG_X(c))
 		b = ((c == 'o' || c == 'O') ? 8 : 16);
 	return (b);

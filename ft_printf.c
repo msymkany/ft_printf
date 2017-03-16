@@ -33,7 +33,7 @@ t_magic		*get_it(const char **fr, va_list ap, t_magic *m)
 	}
 	else
 	{
-		(m)->c = 'b';
+		(m)->c = '%';
 		(m)->buf = ft_strsub(*fr, 0, 1);
 	}
 	parce_it(s, *fr - s, m);

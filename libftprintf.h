@@ -23,7 +23,7 @@
 **	int r - result int;
 **  int len - length of buf;
 **	char mod: hh = f, h, l, ll = m, z, j;
-**	char c - conv flag or 'b' for any other character, icluding '%';
+**	char c - conversion flag ('%' for any other character, 'b' for binary);
 **  char *buf - arg converted to str;
 */
 
@@ -39,12 +39,12 @@
 # define FLAG_SIG(x) (x == '-' || x == '#' || x == '+' || x == ' '|| x == '.')
 # define FLAG_NUM(x) (x >= '0' && x <= '9')
 # define FLAG_MOD(x) (x == 'h' || x == 'l' || x == 'z' || x == 'j')
-# define FLAG_U(x) (x == 'u' || x == 'U')
+# define FLAG_U(x) (x == 'u' || x == 'U' || x == 'b')
 # define FLAG_I(x) (x == 'i' || x == 'd' || x == 'D')
 # define FLAG_C(x) (x == 's' || x == 'S' || x == 'c' || x == 'C')
 # define FLAG_X(x)  (x == 'o' || x == 'O' || x == 'x' || x == 'X')
 # define FLAG_P(x) (x == 'p')
-# define FLAG_B(x) (x == 'b')
+# define FLAG_PER(x) (x == '%')
 # define FLAG_CON(x) (FLAG_U(x) || FLAG_I(x) || FLAG_C(x) || FLAG_X(x))
 # define FLAG_XI(x) (FLAG_I(x) || FLAG_X(x))
 # define FLAG_DIGIT(x) (FLAG_I(x) || FLAG_X(x) || FLAG_U(x))
@@ -81,7 +81,7 @@ void			conv_signed(void *arg, t_magic *m);
 void			conv_char(void *arg, t_magic *m);
 int				size_wchar(wchar_t w);
 void			wstr_conv(wchar_t *arg, t_magic *m);
-char			*wchar_conv(wchar_t w, t_magic *m, size_t i);
+char			*wchar_conv(wchar_t w);
 
 int				get_base(char c);
 void			itoa_base(uintmax_t value, int base, t_magic *m);

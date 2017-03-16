@@ -58,7 +58,7 @@ void		clear_print(t_magic *m)
 		if (m->print[2] == '0')
 			m->print[2] = 0;
 	}
-	if (m->c == 'b')
+	if (FLAG_PER(m->c))
 		m->print[3] = '1';
 	else if (FLAG_P(m->c))
 		m->print[1] = '#';

@@ -12,7 +12,7 @@
 
 #include "libftprintf.h"
 
-int		size_wchar(wchar_t w)
+int				size_wchar(wchar_t w)
 {
 	if (w <= 127)
 		return (1);
@@ -25,15 +25,13 @@ int		size_wchar(wchar_t w)
 	return (0);
 }
 
-char	*wchar_conv(wchar_t w, t_magic *m, size_t i)
+char			*wchar_conv(wchar_t w)
 {
 	int		size;
 	char	*buf;
 
 	size = size_wchar(w);
 	buf = ft_strnew(size);
-	if (m->w_str)
-		m->w_str[i] = (char)size;
 	if (size == 1)
 		buf[0] = (char)w;
 	else
@@ -46,43 +44,40 @@ char	*wchar_conv(wchar_t w, t_magic *m, size_t i)
 	return (buf);
 }
 
-void 	realoc_wstr(t_magic *m, size_t r)
+static size_t	arg_len(wchar_t *arg)
 {
-	char 	*tmp;
+	size_t	i;
 
-	tmp = ft_strnew(50 * r);
-	tmp = ft_strcpy(tmp, m->w_str);
-	ft_strdel(&m->w_str);
-	m->w_str = ft_strdup(tmp);
-	ft_strdel(&tmp);
+	i = 0;
+	while (arg[i++])
+		;
+	return (i);
 }
 
-void	wstr_conv(wchar_t *arg, t_magic *m)
+void			wstr_conv(wchar_t *arg, t_magic *m)
 {
-	char 	*tmp;
-	char 	*w_char;
+	char	*tmp;
 	size_t	i;
 	size_t	r;
 
-	r = 1;
+	r = 0;
 	i = 0;
-	m->print[3] = '0';
+	m->print[3] = (!arg) ? '0' : '1';
 	if (!arg)
 		m->buf = ft_strdup("(null)");
 	else
 	{
-		m->print[3] = '1';
-		m->w_str = ft_strnew(50);
-		m->buf = wchar_conv(*arg, m, i++);
-		while (*arg && *(++arg))
+		m->w_str = ft_strnew(arg_len(arg));
+		while (arg[i])
 		{
-			if (i == r * 50)
-				realoc_wstr(m, ++r);
-			tmp = ft_strdup(m->buf);
-			ft_strdel(&m->buf);
-			w_char = wchar_conv(*arg, m, i++);
-			m->buf = ft_strjoin(tmp, w_char);
-			ft_strdel(&w_char);
+			m->w_str[i] = (char)size_wchar(arg[i]);
+			r += (size_t)m->w_str[i++];
+		}
+		m->buf = ft_strnew(r);
+		while (i--)
+		{
+			tmp = wchar_conv(*(arg++));
+			m->buf = ft_strcat(m->buf, tmp);
 			ft_strdel(&tmp);
 		}
 	}
