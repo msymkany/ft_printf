@@ -86,7 +86,7 @@ void		conv_char(void *arg, t_magic *m)
 	}
 	else if (m->c == 'c' || m->c == 'C')
 	{
-		m->buf = wchar_conv((wchar_t) arg);
+		m->buf = wchar_conv((wchar_t)arg, m, 0);
 		m->print[3] = '1';
 	}
 	else if (m->c == 's' || m->c == 'S')

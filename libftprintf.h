@@ -62,6 +62,7 @@ typedef struct	s_magic
 	char		mod;
 	char		c;
 	char		*buf;
+	char		*w_str;
 }				t_magic;
 
 int				ft_printf(const char *format, ...);
@@ -80,7 +81,7 @@ void			conv_signed(void *arg, t_magic *m);
 void			conv_char(void *arg, t_magic *m);
 int				size_wchar(wchar_t w);
 void			wstr_conv(wchar_t *arg, t_magic *m);
-char			*wchar_conv(wchar_t w);
+char			*wchar_conv(wchar_t w, t_magic *m, size_t i);
 
 int				get_base(char c);
 void			itoa_base(uintmax_t value, int base, t_magic *m);

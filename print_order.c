@@ -87,7 +87,7 @@ void		print_2(t_magic *m)
 
 void		print_3(t_magic *m)
 {
-	if (m->c == 'c' && m->buf[0] == 0)
+	if ((m->c == 'c' || m->c == 'C') && m->buf[0] == 0)
 	{
 		write(1, "\0", 1);
 		(m->r)++;
