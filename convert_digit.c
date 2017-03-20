@@ -30,21 +30,19 @@ void	itoa_int(intmax_t value, t_magic *m)
 	uintmax_t	v;
 	char		*hex;
 
-	m->print[3] = '1';
 	hex = "0123456789";
-	v = A(value);
 	l = 1;
+	v = A(value);
+	m->print[3] = (value == 0) ? '0' : '1';
+	if (value < 0)
+		m->print[1] = '-';
 	while (v /= BASE)
 		l++;
 	if (!(m->buf = (char *)malloc(sizeof(char) * (l + 1))))
 		return ;
 	m->buf[l--] = 0;
-	m->print[1] = (char)((value < 0) ? '-' : 0);
 	if (value == 0)
-	{
 		m->buf[l] = '0';
-		m->print[3] = '0';
-	}
 	v = A(value);
 	while (v)
 	{

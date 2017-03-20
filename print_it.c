@@ -14,27 +14,14 @@
 
 void		len_print(t_magic *m)
 {
-	size_t		i;
-
-	i = 0;
 	if (m->c == 'c' && m->buf[0] == 0)
 		m->len = 1;
 	else if (m->print[3] == '0' && m->p == 0)
 		m->len = 0;
-	else if ((m->c == 's' || m->c == 'S') && (m->p >= 0 && (m->p < m->len)))
+	else if (m->c == 's' || m->c == 'S')
 	{
-		m->len = m->p;
-		if ((m->mod == 'l' || m->c == 'S') && m->print[3] == '1')
-		{
-			if (m->p < m->w_str[i])
-				m->len = 0;
-			else
-			{
-				m->len = m->w_str[i++];
-				while ((m->len + m->w_str[i]) <= m->p)
-					m->len += m->w_str[i++];
-			}
-		}
+		if (m->p >= 0 && (m->p < m->len))
+			m->len = m->p;
 	}
 }
 
@@ -50,6 +37,7 @@ void		print_it(t_magic *m)
 	print_arr[3] = print_3;
 	print_arr[4] = print_0;
 	len_print(m);
+	m->w = A(m->w);
 	while (i < 5)
 	{
 		if (m->print[i])

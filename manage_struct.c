@@ -18,14 +18,13 @@ t_magic		*init_struct(void)
 
 	m = (t_magic *)malloc(sizeof(t_magic));
 	m->buf = NULL;
-	m->w_str = NULL;
 	return (m);
 }
 
 void		clear_struct(t_magic *m, char fl)
 {
 	ft_bzero(m->print, PRINT);
-	m->w = -1;
+	m->w = 0;
 	m->p = -1;
 	m->r = 0;
 	m->len = 1;
@@ -36,11 +35,6 @@ void		clear_struct(t_magic *m, char fl)
 		free(m->buf);
 		m->buf = NULL;
 	}
-	if (m->w_str)
-	{
-		free(m->w_str);
-		m->w_str = NULL;
-	}
 }
 
 void		del_struct(t_magic **m)
@@ -49,11 +43,6 @@ void		del_struct(t_magic **m)
 	{
 		free((*m)->buf);
 		(*m)->buf = NULL;
-	}
-	if ((*m)->w_str)
-	{
-		free((*m)->w_str);
-		(*m)->w_str = NULL;
 	}
 	free(*m);
 	*m = NULL;

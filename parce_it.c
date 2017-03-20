@@ -34,7 +34,7 @@ void		parce_if_digit(char fr, t_magic *m)
 	{
 		if (fr == ' ' && m->print[1] == 0)
 			m->print[1] = ' ';
-		else if (fr == '+' && m->print[1] != '-' && m->print[1] != '+')
+		else if (fr == '+')
 			m->print[1] = '+';
 	}
 	else if (fr == '#' && FLAG_X(m->c) && m->print[1] != '#')
@@ -43,6 +43,10 @@ void		parce_if_digit(char fr, t_magic *m)
 
 void		clear_print(t_magic *m)
 {
+	if (m->w > 0)
+		m->print[0] = ' ';
+	else if (m->w < 0)
+		m->print[4] = ' ';
 	if (FLAG_DIGIT(m->c) || FLAG_P(m->c))
 	{
 		if (m->p > m->len)
@@ -64,7 +68,20 @@ void		clear_print(t_magic *m)
 		m->print[1] = '#';
 }
 
-void		parce_it(const char *fr, size_t l, t_magic *m)
+void		get_precision(const char **fr, t_magic *m, va_list ap)
+{
+	if (FLAG_NUM(*(*fr + 1)))
+		m->p = atoi_num(fr);
+	else if (*(*fr + 1) == '*')
+	{
+		m->p = va_arg(ap, int);
+		(*fr)++;
+	}
+	else
+		m->p = 0;
+}
+
+void		parce_it(const char *fr, size_t l, t_magic *m, va_list ap)
 {
 	const char *end;
 
@@ -72,12 +89,11 @@ void		parce_it(const char *fr, size_t l, t_magic *m)
 	while (fr != end)
 	{
 		if (FLAG_NUM(*fr) && *fr != '0')
-		{
 			m->w = atoi_num(&fr);
-			m->print[0] = ' ';
-		}
 		else if (*fr == '.')
-			m->p = (FLAG_NUM(*(fr + 1))) ? atoi_num(&fr) : 0;
+			get_precision(&fr, m, ap);
+		else if (*fr == '*')
+			m->w = va_arg(ap, int);
 		else if ((*fr == ' ' || *fr == '+' || *fr == '#') && FLAG_XI(m->c))
 			parce_if_digit(*fr, m);
 		else if (*fr == '0' && m->print[2] != '0')
@@ -87,5 +103,4 @@ void		parce_it(const char *fr, size_t l, t_magic *m)
 		fr++;
 	}
 	clear_print(m);
-	print_it(m);
 }

@@ -13,18 +13,20 @@
 /*
 ** ---------------- struct t_magic ---------------------
 ** print[6] - print order:
-** 		[0] - ' ', width space;
-** 		[1] - ' ', '-', '+', '#', sign, space or prefix;
-** 		[2] - '1' precision or '0' null flag;
-** 		[3] - '1' there's arg in buf, '0' if arg is 0 for exceptions;
-** 		[4] - ' ', width space if minus flag;
-**  int	w - width;
+**		[0] - ' ', width space;
+**		[1] - ' ', '-', '+', '#', sign, space or prefix;
+**		[2] - '1' precision or '0' null flag;
+**		[3] - '1' there's arg in buf, '0' if arg is 0 for exceptions;
+**		[4] - ' ', width space if minus flag;
+**	int	w - width;
 **	int p - precision;
 **	int r - result int;
-**  int len - length of buf;
+**	int len - length of buf;
 **	char mod: hh = f, h, l, ll = m, z, j;
 **	char c - conversion flag ('%' for any other character, 'b' for binary);
-**  char *buf - arg converted to str;
+**	char *buf - arg converted to str;
+**	char *w_str - str with size of each unicode symbol in wide string,
+**				  to detect precision later on;
 */
 
 #ifndef LIBFTPRINTF_H
@@ -37,6 +39,7 @@
 
 # define FLAG_SKIP(x) (x == ',' || x == ':' || x == ';' || x == '_')
 # define FLAG_SIG(x) (x == '-' || x == '#' || x == '+' || x == ' '|| x == '.')
+# define FLAG_SIG2(x) (x == '*')
 # define FLAG_NUM(x) (x >= '0' && x <= '9')
 # define FLAG_MOD(x) (x == 'h' || x == 'l' || x == 'z' || x == 'j')
 # define FLAG_U(x) (x == 'u' || x == 'U' || x == 'b')
@@ -62,7 +65,6 @@ typedef struct	s_magic
 	char		mod;
 	char		c;
 	char		*buf;
-	char		*w_str;
 }				t_magic;
 
 int				ft_printf(const char *format, ...);
@@ -87,7 +89,7 @@ int				get_base(char c);
 void			itoa_base(uintmax_t value, int base, t_magic *m);
 void			itoa_int(intmax_t value, t_magic *m);
 
-void			parce_it(const char *fr, size_t l, t_magic *m);
+void			parce_it(const char *fr, size_t l, t_magic *m, va_list ap);
 int				atoi_num(const char **fr);
 void			parce_if_digit(char fr, t_magic *m);
 void			clear_print(t_magic *m);

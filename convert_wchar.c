@@ -44,41 +44,48 @@ char			*wchar_conv(wchar_t w)
 	return (buf);
 }
 
-static size_t	arg_len(wchar_t *arg)
+void			wstr_join(wchar_t *arg, t_magic *m)
 {
-	size_t	i;
+	char	*tmp;
+	char	*w_char;
 
-	i = 0;
-	while (arg[i++])
-		;
-	return (i);
+	if (!m->buf)
+		m->buf = wchar_conv(*(arg));
+	else
+	{
+		tmp = ft_strdup(m->buf);
+		ft_strdel(&m->buf);
+		w_char = wchar_conv(*arg);
+		m->buf = ft_strjoin(tmp, w_char);
+		ft_strdel(&w_char);
+		ft_strdel(&tmp);
+	}
 }
 
 void			wstr_conv(wchar_t *arg, t_magic *m)
 {
-	char	*tmp;
-	size_t	i;
-	size_t	r;
+	int		i;
 
-	r = 0;
 	i = 0;
 	m->print[3] = (!arg) ? '0' : '1';
 	if (!arg)
 		m->buf = ft_strdup("(null)");
-	else
+	else if (m->p >= 0)
 	{
-		m->w_str = ft_strnew(arg_len(arg));
-		while (arg[i])
+		while (*arg && ((i += size_wchar(*arg)) <= m->p))
 		{
-			m->w_str[i] = (char)size_wchar(arg[i]);
-			r += (size_t)m->w_str[i++];
-		}
-		m->buf = ft_strnew(r);
-		while (i--)
-		{
-			tmp = wchar_conv(*(arg++));
-			m->buf = ft_strcat(m->buf, tmp);
-			ft_strdel(&tmp);
+			wstr_join(arg, m);
+			arg++;
 		}
 	}
+	else
+	{
+		while (*arg)
+		{
+			wstr_join(arg, m);
+			arg++;
+		}
+	}
+	if (!m->buf)
+		m->buf = ft_strdup("");
 }

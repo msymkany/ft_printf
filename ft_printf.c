@@ -25,18 +25,13 @@ t_magic		*get_it(const char **fr, va_list ap, t_magic *m)
 	if (!m)
 		m = init_struct();
 	clear_struct(m, fl);
+	(m)->c = ((FLAG_CON(**fr) || FLAG_P(**fr)) ? **fr : '%');
+	parce_it(s, *fr - s, m, ap);
 	if (FLAG_CON(**fr) || FLAG_P(**fr))
-	{
-		(m)->c = **fr;
 		conv_arg(ap, m);
-		m->len = (int)ft_strlen(m->buf);
-	}
 	else
-	{
-		(m)->c = '%';
 		(m)->buf = ft_strsub(*fr, 0, 1);
-	}
-	parce_it(s, *fr - s, m);
+	print_it(m);
 	(*fr)++;
 	return (m);
 }

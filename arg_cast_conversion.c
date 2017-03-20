@@ -6,7 +6,7 @@
 /*   By: msymkany <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/03/13 16:27:28 by msymkany          #+#    #+#             */
-/*   Updated: 2017/03/13 16:27:35 by msymkany         ###   ########.fr       */
+/*   Updated: 2017/03/20 20:29:04 by msymkany         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,6 +23,7 @@ void		conv_arg(va_list ap, t_magic *m)
 		conv_unsigned(arg, m);
 	else if (FLAG_C(m->c) || FLAG_P(m->c))
 		conv_char(arg, m);
+	m->len = (int)ft_strlen(m->buf);
 }
 
 void		conv_unsigned(void *arg, t_magic *m)

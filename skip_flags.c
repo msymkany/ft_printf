@@ -14,8 +14,8 @@
 
 const char		*skip_flags(const char *fr, char *fl)
 {
-	while ((FLAG_SIG(*fr) || FLAG_NUM(*fr) || FLAG_MOD(*fr) || FLAG_SKIP(*fr))
-			&& *fr)
+	while ((FLAG_SIG(*fr) || FLAG_NUM(*fr) || FLAG_MOD(*fr) || FLAG_SKIP(*fr)
+			|| FLAG_SIG2(*fr)) && *fr)
 	{
 		if (FLAG_MOD(*fr))
 			*fl = get_mod(*fr, *fl);
